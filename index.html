@@ -1,29 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Will You Be My Valentine?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
   <style>
     body {
-      background: pink;
+      margin: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      font-family: 'Comic Sans MS', cursive;
+      font-family: 'Dancing Script', cursive;
+      background: linear-gradient(135deg, #ffb6b9, #fae3d9);
+      overflow: hidden;
+      transition: all 0.5s;
+    }
+    #container {
+      text-align: center;
+      max-width: 500px;
+      background: rgba(255,255,255,0.3);
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 30px;
     }
     button {
       padding: 15px 30px;
-      font-size: 20px;
+      font-size: 18px;
       margin: 10px;
+      border: none;
+      border-radius: 15px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    #finalNote {
+      display: none;
+      font-size: 1.5em;
+      margin-top: 20px;
+      line-height: 1.5em;
+    }
+    /* Heart animation */
+    .hearts {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 3s linear infinite;
+      border-radius: 0 50% 50% 0;
+    }
+    .hearts::before, .hearts::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .hearts::before { top: -10px; left: 0; }
+    .hearts::after { left: 10px; top: 0; }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity:1;}
+      100% { transform: translateY(-400px) rotate(45deg); opacity:0;}
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1>Will you be my Valentine? 💖</h1>
-    <button onclick="alert('YAY! 💘')">Yes</button>
-    <button onclick="alert('Think again 😌')">No</button>
+  <div id="container">
+    <h1 id="question">Will you be my Valentine? 💖</h1>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+    <div id="finalNote"></div>
   </div>
+
+  <script>
+    const questions = [
+      "Awesome! 😍 Kemon aso ajke?",
+      "Amar sathe ekta date korte ichha ache naki? 🥰",
+      "Tui amar life er special part hobi naki? 💘",
+    ];
+
+    let current = 0;
+    const questionEl = document.getElementById('question');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const finalNote = document.getElementById('finalNote');
+    const container = document.getElementById('container');
+
+    yesBtn.onclick = () => {
+      if(current < questions.length) {
+        questionEl.textContent = questions[current];
+        current++;
+      } else {
+        showFinalNote();
+      }
+    }
+
+    // Dodge "No" button
+    noBtn.onmouseover = () => {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+
+    function showFinalNote() {
+      questionEl.style.display = 'none';
+      yesBtn.style.display = 'none';
+      noBtn.style.display = 'none';
+      finalNote.style.display = 'block';
+      finalNote.innerHTML = `
+        <p>Hey ❤️</p>
+        <p>Amar life er sobcheye special tumi. 😘</p>
+        <p>Valentine's Day e amar sathe thakbe naki? 💌</p>
+      `;
+      // Add floating hearts
+      for(let i=0;i<30;i++){
+        const heart = document.createElement('div');
+        heart.className = 'hearts';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.animationDuration = (2+Math.random()*3) + 's';
+        document.body.appendChild(heart);
+      }
+    }
+  </script>
 </body>
 </html>
