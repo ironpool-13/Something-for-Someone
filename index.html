@@ -15,21 +15,24 @@
       font-family: 'Dancing Script', cursive;
       background: linear-gradient(135deg, #ffb6b9, #fae3d9);
       overflow: hidden;
-      transition: all 0.5s;
     }
+
     #container {
       text-align: center;
       max-width: 500px;
+      width: 90%;
       background: rgba(255,255,255,0.3);
       padding: 30px;
       border-radius: 25px;
       box-shadow: 0 0 25px rgba(0,0,0,0.1);
       position: relative;
     }
+
     h1 {
       font-size: 2.2em;
       margin-bottom: 30px;
     }
+
     button {
       padding: 15px 30px;
       font-size: 18px;
@@ -40,10 +43,11 @@
       transition: all 0.3s ease;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
+
     button:hover {
       transform: scale(1.1);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
+
     #finalNote {
       display: none;
       font-size: 1.5em;
@@ -54,18 +58,15 @@
       border: 2px solid #ccc;
       border-radius: 10px;
       background: #fffbe0;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
       position: relative;
       overflow: hidden;
     }
+
     /* Notebook lines */
     #finalNote::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background-image: repeating-linear-gradient(
         to bottom,
         transparent,
@@ -74,12 +75,14 @@
       );
       z-index: 0;
     }
+
     #finalNote p {
       position: relative;
       z-index: 1;
-      margin: 0 0 10px 0;
+      margin-bottom: 10px;
     }
-    /* Hearts animation */
+
+    /* Hearts */
     .hearts {
       position: absolute;
       width: 20px;
@@ -89,7 +92,9 @@
       animation: float 3s linear infinite;
       border-radius: 0 50% 50% 0;
     }
-    .hearts::before, .hearts::after {
+
+    .hearts::before,
+    .hearts::after {
       content: '';
       position: absolute;
       width: 20px;
@@ -97,14 +102,24 @@
       background: red;
       border-radius: 50%;
     }
-    .hearts::before { top: -10px; left: 0; }
-    .hearts::after { left: 10px; top: 0; }
+
+    .hearts::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .hearts::after {
+      left: 10px;
+      top: 0;
+    }
+
     @keyframes float {
-      0% { transform: translateY(0) rotate(45deg); opacity:1;}
-      100% { transform: translateY(-400px) rotate(45deg); opacity:0;}
+      0% { transform: translateY(0) rotate(45deg); opacity:1; }
+      100% { transform: translateY(-400px) rotate(45deg); opacity:0; }
     }
   </style>
 </head>
+
 <body>
   <div id="container">
     <h1 id="question">HI are you Duchi ?</h1>
@@ -121,50 +136,64 @@
     ];
 
     let current = 0;
+
     const questionEl = document.getElementById('question');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const finalNote = document.getElementById('finalNote');
+    const container = document.getElementById('container');
 
     yesBtn.onclick = () => {
-      if(current < questions.length) {
+      if (current < questions.length) {
         questionEl.textContent = questions[current];
         current++;
       } else {
         showFinalNote();
       }
-    }
+    };
 
-    // Dodge "No" button on all questions including first
+    // FIXED No button (stays inside container)
     noBtn.onmouseover = () => {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      const rect = container.getBoundingClientRect();
+
+      const maxX = rect.width - noBtn.offsetWidth - 20;
+      const maxY = rect.height - noBtn.offsetHeight - 20;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
       noBtn.style.position = 'absolute';
       noBtn.style.left = x + 'px';
       noBtn.style.top = y + 'px';
-    }
+    };
 
     function showFinalNote() {
       questionEl.style.display = 'none';
       yesBtn.style.display = 'none';
       noBtn.style.display = 'none';
+
       finalNote.style.display = 'block';
       finalNote.innerHTML = `
         <p>Hey ❤️</p>
-        <p>To the love of my life, you make my life so meaningful and I am so lucky to have you as my valentine this year. I love you wholeheartedly and I can't wait to continue loving you for the rest of my life. I know I tell you this everyday but you are literally the most beautiful girl I know. Anyways, I love you.
-</p>
-        <p> Always, Forever 💌</p>
+        <p>
+          To the love of my life, you make my life so meaningful and I am so lucky
+          to have you as my valentine this year. I love you wholeheartedly and I
+          can't wait to continue loving you for the rest of my life. I know I tell
+          you this everyday but you are literally the most beautiful girl I know.
+          Anyways, I love you.
+        </p>
+        <p>Always, Forever 💌</p>
       `;
-      // Floating hearts
-      for(let i=0;i<30;i++){
+
+      for (let i = 0; i < 25; i++) {
         const heart = document.createElement('div');
         heart.className = 'hearts';
         heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.animationDuration = (2+Math.random()*3) + 's';
+        heart.style.animationDuration = (2 + Math.random() * 3) + 's';
         document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
       }
     }
   </script>
 </body>
 </html>
-
