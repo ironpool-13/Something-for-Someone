@@ -1,199 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Will You Be My Valentine?</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Dancing Script', cursive;
-      background: linear-gradient(135deg, #ffb6b9, #fae3d9);
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
-    #container {
-      text-align: center;
-      max-width: 500px;
-      width: 90%;
-      background: rgba(255,255,255,0.3);
-      padding: 30px;
-      border-radius: 25px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.1);
-      position: relative;
-    }
-
-    h1 {
-      font-size: 2.2em;
-      margin-bottom: 30px;
-    }
-
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      margin: 10px;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    button:hover {
-      transform: scale(1.1);
-    }
-
-    #finalNote {
-      display: none;
-      font-size: 1.5em;
-      line-height: 1.6em;
-      padding: 20px;
-      margin: 0 auto;
-      max-width: 400px;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      background: #fffbe0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Notebook lines */
-    #finalNote::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent 28px,
-        rgba(200,200,200,0.3) 29px
-      );
-      z-index: 0;
-    }
-
-    #finalNote p {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 10px;
-    }
-
-    /* Hearts */
-    .hearts {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      transform: rotate(45deg);
-      animation: float 3s linear infinite;
-      border-radius: 0 50% 50% 0;
-    }
-
-    .hearts::before,
-    .hearts::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-    }
-
-    .hearts::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .hearts::after {
-      left: 10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(45deg); opacity:1; }
-      100% { transform: translateY(-400px) rotate(45deg); opacity:0; }
-    }
-  </style>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Dancing Script',cursive;
+  background:linear-gradient(135deg,#ffb6b9,#fae3d9);
+  overflow:hidden;
+}
+#container{
+  text-align:center;
+  width:90%;
+  max-width:500px;
+  background:rgba(255,255,255,0.35);
+  padding:30px;
+  border-radius:25px;
+  position:relative;
+}
+h1{
+  font-size:2.2em;
+  margin-bottom:30px;
+}
+button{
+  padding:14px 28px;
+  font-size:18px;
+  margin:10px;
+  border:none;
+  border-radius:15px;
+  cursor:pointer;
+  background:#ff6f91;
+  color:white;
+  transition:.3s;
+  position:relative;
+}
+button:hover{
+  transform:scale(1.05);
+}
+#finalNote{
+  display:none;
+  font-size:1.4em;
+  padding:20px;
+  background:#fffbe0;
+  border-radius:10px;
+}
+</style>
 </head>
 
 <body>
-  <div id="container">
-    <h1 id="question">HI are you Duchi ?</h1>
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
-    <div id="finalNote"></div>
-  </div>
+<div id="container">
+<h1 id="question">HI are you Duchi ?</h1>
+<div id="buttons">
+<button id="yesBtn">Yes</button>
+<button id="noBtn">No</button>
+</div>
+<div id="finalNote"></div>
+</div>
 
-  <script>
-    const questions = [
-      "Awesome!😍 So, Will You Be My Valentine?",
-      "ikr No bole laav nai sed. Souuu you LOVE me huh?",
-      " arent I the BEST?! 💘",
-    ];
+<script>
+let step = 1; // tracks which question
+const q = document.getElementById("question");
+const buttons = document.getElementById("buttons");
+const final = document.getElementById("finalNote");
 
-    let current = 0;
+// reset No button position
+function resetNo(no){
+  no.style.position="relative";
+  no.style.left="0px";
+  no.style.top="0px";
+  no.onmouseover=null;
+}
 
-    const questionEl = document.getElementById('question');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const finalNote = document.getElementById('finalNote');
-    const container = document.getElementById('container');
+// Q1
+function showQ1(){
+  step=1;
+  q.textContent="HI are you Duchi ?";
+  buttons.innerHTML=`<button id="yesBtn">Yes</button><button id="noBtn">No</button>`;
+  attachQ1();
+}
 
-    yesBtn.onclick = () => {
-      if (current < questions.length) {
-        questionEl.textContent = questions[current];
-        current++;
-      } else {
-        showFinalNote();
-      }
-    };
+function attachQ1(){
+  const yes = document.getElementById("yesBtn");
+  const no = document.getElementById("noBtn");
 
-    // FIXED No button (stays inside container)
-    noBtn.onmouseover = () => {
-      const rect = container.getBoundingClientRect();
+  yes.onclick = ()=>{
+    step=2;
+    showQ2();
+  }
 
-      const maxX = rect.width - noBtn.offsetWidth - 20;
-      const maxY = rect.height - noBtn.offsetHeight - 20;
+  no.onclick = ()=>{
+    q.textContent="Taile what are you doing here? 😐 This wish is for my Duchi only.";
+    buttons.innerHTML=`<button id="returnBtn">Return</button>`;
+    document.getElementById("returnBtn").onclick = showQ1;
+  }
+}
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+// Q2
+function showQ2(){
+  q.textContent="Awesome!😍 So, Will You Be My Valentine?";
+  buttons.innerHTML=`<button id="yesBtn">Yes</button><button id="noBtn">No</button>`;
+  attachQ2();
+}
 
-      noBtn.style.position = 'absolute';
-      noBtn.style.left = x + 'px';
-      noBtn.style.top = y + 'px';
-    };
+function attachQ2(){
+  const yes = document.getElementById("yesBtn");
+  const no = document.getElementById("noBtn");
 
-    function showFinalNote() {
-      questionEl.style.display = 'none';
-      yesBtn.style.display = 'none';
-      noBtn.style.display = 'none';
+  no.onmouseover = ()=>{ 
+    const rect = buttons.getBoundingClientRect();
+    const x = Math.random() * (rect.width - no.offsetWidth);
+    const y = Math.random() * (rect.height - no.offsetHeight);
+    no.style.position="absolute";
+    no.style.left = x+"px";
+    no.style.top = y+"px";
+  }
+  no.onclick = ()=>{}; // do nothing
 
-      finalNote.style.display = 'block';
-      finalNote.innerHTML = `
-        <p>Hey ❤️</p>
-        <p>
-          To the love of my life, you make my life so meaningful and I am so lucky
-          to have you as my valentine this year. I love you wholeheartedly and I
-          can't wait to continue loving you for the rest of my life. I know I tell
-          you this everyday but you are literally the most beautiful girl I know.
-          Anyways, I love you.
-        </p>
-        <p>Always, Forever 💌</p>
-      `;
+  yes.onclick = ()=>{
+    resetNo(no);
+    showQ3();
+  }
+}
 
-      for (let i = 0; i < 25; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'hearts';
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.animationDuration = (2 + Math.random() * 3) + 's';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-      }
-    }
-  </script>
+// Q3
+function showQ3(){
+  step=3;
+  q.textContent="ikr No bole laav nai sed. Souuu you LOVE me huh?";
+  buttons.innerHTML=`<button id="yesBtn">Yes</button><button id="noBtn">No</button>`;
+  attachQ3();
+}
+
+function attachQ3(){
+  const yes = document.getElementById("yesBtn");
+  const no = document.getElementById("noBtn");
+
+  no.onmouseover = ()=>{ 
+    const rect = buttons.getBoundingClientRect();
+    const x = Math.random() * (rect.width - no.offsetWidth);
+    const y = Math.random() * (rect.height - no.offsetHeight);
+    no.style.position="absolute";
+    no.style.left = x+"px";
+    no.style.top = y+"px";
+  }
+  no.onclick = ()=>{}; // do nothing
+
+  yes.onclick = showQ4;
+}
+
+// Q4
+function showQ4(){
+  step=4;
+  q.textContent="Aren’t I the BEST?! 💘";
+  buttons.innerHTML=`<button id="yesBtn">Yes</button><button id="noBtn">No</button>`;
+  attachQ4();
+}
+
+function attachQ4(){
+  const yes = document.getElementById("yesBtn");
+  const no = document.getElementById("noBtn");
+
+  yes.onclick = showFinal;
+
+  no.onclick = ()=>{
+    q.textContent="ki bolos vai ami best na hole r ke ?";
+    buttons.innerHTML=`<button id="thinkBtn">Think Again</button>`;
+    document.getElementById("thinkBtn").onclick = showQ4;
+  }
+}
+
+// Final
+function showFinal(){
+  q.style.display="none";
+  buttons.style.display="none";
+  final.style.display="block";
+  final.innerHTML=`
+    <p>Hey ❤️</p>
+    <p>To the love of my life, you make my life so meaningful and I am so lucky to have you as my valentine this year. I love you wholeheartedly and I can't wait to continue loving you for the rest of my life.</p>
+    <p>Always, Forever 💌</p>
+  `;
+}
+
+// start
+showQ1();
+</script>
 </body>
 </html>
